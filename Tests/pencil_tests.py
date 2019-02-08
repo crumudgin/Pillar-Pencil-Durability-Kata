@@ -10,6 +10,10 @@ class PencilTests(unittest.TestCase):
 	def tearDown(self):
 		pass
 
+	def paperIsString(self, message):
+		paper = [message]
+		self.pencil.how_to_write = self.pencil.WRITE_WITH_STRING
+
 	def when_write_on_string(self):
 		test_string = "Hello World!"
 		paper = [""]
