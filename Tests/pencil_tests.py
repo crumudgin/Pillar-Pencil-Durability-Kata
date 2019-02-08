@@ -1,32 +1,15 @@
-import unittest
+import pytest
 from pencil import Pencil
 
-class PencilTests(unittest.TestCase):
+@pytest.fixture
+def pencil():
+	return Pencil()
 
-	# Tests for Write Section of problem statment
-	def setUp(self):
-		self.pencil = Pencil()
-
-	def tearDown(self):
-		pass
-
-	def paperIsString(self, message):
-		paper = [message]
-		self.pencil.how_to_write = self.pencil.WRITE_WITH_STRING
-
-	def when_write_on_string(self):
-		test_string = "Hello World!"
-		paper = [""]
-		self.pencil.write(test_string, paper)
-		self.assertEqual(paper[0], test_string)
-
-	def when_write_with_existing_text(self):
-		test_string = "she sells sea shells by the sea shore"
-		paper = [test_string[:19]]
-		self.pencil.write(test_string[19:], paper)
-		self.assertEqual(paper[0], test_string)
-
-
-
-if __name__ == '__main__':
-    unittest.main()
+@pytest.mark.parametrize(	 ("expected_writing_on_page", 				"page_before_being_writen_on", 	"string_to_write"),
+							[("Hello World!", 							"",								"Hello World!"),
+							 ("She sells sea shells by the sea shore", 	"She sells sea shells",			" by the sea shore")
+							])
+def test_write_on_strings(pencil, expected_writing_on_page, page_before_being_writen_on, string_to_write):
+	paper = [page_before_being_writen_on]
+	pencil.write(string_to_write, paper)
+	assert expected_writing_on_page == paper[0]
