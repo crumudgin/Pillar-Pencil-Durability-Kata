@@ -4,7 +4,9 @@ from pencil import Pencil
 test_labels = "expected_writing_on_page, page_before_being_writen_on, string_to_write, string_starting_point"
 
 test_data = [("Hello World!", 							"",						"Hello World!",			0),
-			("She sells sea shells by the sea shore", 	"She sells sea shells",	" by the sea shore",	0)
+			("She sells sea shells by the sea shore", 	"She sells sea shells",	" by the sea shore",	0),
+			("123", 									"1 3", 					"2",					1),
+			("1@3",										"123",					"2", 					1)
 			]
 
 """
