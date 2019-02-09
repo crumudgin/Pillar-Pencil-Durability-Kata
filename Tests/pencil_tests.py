@@ -62,6 +62,11 @@ def test_write_on_text_files(pencil, tmpdir, expected_writing_on_page, page_befo
 	pencil.write(string_to_write, paper, string_starting_point)
 	assert paper.read() == expected_writing_on_page
 
+"""
+A series of tests to test that the pencil can write on any object
+given to it so long as the pencil is told where to and how to write
+to the object
+"""
 @pytest.mark.parametrize(writing_test_labels, writing_test_data)
 def test_write_on_paper_object(pencil, expected_writing_on_page, page_before_being_writen_on, string_to_write, string_starting_point):
 	class Paper():
@@ -74,7 +79,7 @@ def test_write_on_paper_object(pencil, expected_writing_on_page, page_before_bei
 	assert paper.text == expected_writing_on_page
 
 """
-A series of tests to test the pencil durrability and what happens when that durrability runs out
+A series of tests to test the pencil durability and what happens when that durability runs out
 """
 @pytest.mark.parametrize(point_degradation_test_labels, point_degradation_test_data)
 def test_point_degradation(expected_writing_on_page, expected_point_value, starting_point_value, page_before_being_writen_on, string_to_write, string_starting_point):
@@ -84,6 +89,9 @@ def test_point_degradation(expected_writing_on_page, expected_point_value, start
 	assert expected_writing_on_page == paper[0]
 	assert expected_point_value == pencil.point_durability
 
+"""
+A series of tests to test the sharpen functionality of the pencil
+"""
 @pytest.mark.parametrize(sharpen_test_labels, sharpen_test_data)
 def test_sharpen(expected_writing_on_page, expected_point_value, starting_point_value, expected_length, starting_length, page_before_being_writen_on, string_to_write, string_starting_point):
 	pencil = Pencil(starting_point_value, starting_length)
