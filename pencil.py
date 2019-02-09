@@ -10,6 +10,5 @@ class Pencil():
 		with open(paper, "a") as file:
 			file.write(to_write)
 
-
-	def write(self, to_write, paper):
+	def write(self, to_write, paper, string_starting_point):
 		self.how_to_write(to_write, paper)
