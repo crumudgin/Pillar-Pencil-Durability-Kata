@@ -3,11 +3,11 @@ from pencil import Pencil
 
 writing_test_labels = "expected_writing_on_page, page_before_being_writen_on, string_to_write, string_starting_point"
 
-writing_test_data =	[("Hello World!", 							"",						"Hello World!",			None),
-					("She sells sea shells by the sea shore", 	"She sells sea shells",	" by the sea shore",	None),
-					("123", 									"1 3", 					"2",					1),
-					("1@3",										"123",					"2", 					1),
-					("12 3", 									"12", 					"3", 					3)
+writing_test_data =	[("Hello World!",							"",						"Hello World!",			None),
+					("She sells sea shells by the sea shore",	"She sells sea shells",	" by the sea shore",	None),
+					("123",										"1 3",					"2",					1),
+					("1@3",										"123",					"2",					1),
+					("12 3",									"12",					"3",					3)
 					]
 
 point_degradation_test_labels = "expected_writing_on_page, expected_point_value, starting_point_value, page_before_being_writen_on, string_to_write, string_starting_point"
@@ -18,7 +18,9 @@ point_degradation_test_data = 	[("test",			0,	4,	"",				"test",				None),
 								("This is a Test!",	0,	14,	"",				"This is a Test!",	None),
 								("This           ",	0,	5,	"",				"This is a Test!",	None),
 								("This is a Test!",	10,	24,	"",				"This is a Test!",	None),
-								("This is a Test!",	8,	14,	"This is a ",	"Test!",			10)
+								("This is a Test!",	8,	14,	"This is a ",	"Test!",			10),
+								("    ",			0,	0,	"",				"test",				None),
+								("    ",			0,	-1,	"",				"test",				None)
 								]
 
 """
@@ -48,6 +50,9 @@ def test_write_on_text_files(durable_pencil, tmpdir, expected_writing_on_page, p
 	durable_pencil.write(string_to_write, paper, string_starting_point)
 	assert paper.read() == expected_writing_on_page
 
+"""
+A series of tests to test the pencil durrability and what happens when that durrability runs out
+"""
 @pytest.mark.parametrize(point_degradation_test_labels, point_degradation_test_data)
 def test_point_degradation(expected_writing_on_page, expected_point_value, starting_point_value, page_before_being_writen_on, string_to_write, string_starting_point):
 	pencil = Pencil(starting_point_value)
