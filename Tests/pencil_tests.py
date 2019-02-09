@@ -34,6 +34,14 @@ sharpen_test_data = 	[("",		1,	1,	0,	1,	"",	"",		None),
 						("Test",	1,	6,	0,	0,	"",	"Test",	None)
 						]
 
+erase_test_labels = "expected_writing_on_page, page_before_being_erased, string_to_erase"
+
+erase_test_data = 	[("", "test", "test"),
+					("test", "testtest", "test"),
+					("123", "1232", "2"),
+					("test", "test", "2"),
+					("test", "the rest", "he rest")
+					]
 
 """
 A pencil fixture to be shared by the rest of the test cases
@@ -100,3 +108,9 @@ def test_sharpen(expected_writing_on_page, expected_point_value, starting_point_
 	pencil.sharpen()
 	assert pencil.point_durability == expected_point_value
 	assert pencil.length == expected_length
+
+@pytest.mark.parametrize(erase_test_labels, erase_test_data)
+def test_erase(pencil, expected_writing_on_page, page_before_being_erased, string_to_erase):
+	paper = [page_before_being_erased]
+	pencil.erase(paper, string_to_erase)
+	assert paper[0] == expected_writing_on_page
