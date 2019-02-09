@@ -1,8 +1,10 @@
 class Pencil():
 
-	def __init__(self, point_durability):
+	def __init__(self, point_durability, length):
 		self.how_to_write = self.write_to_string
 		self.point_durability = point_durability
+		self.max_point_durrability = point_durability
+		self.length = length
 
 	def calc_char_to_write(self, potential_char_to_write, char_in_paper):
 		if potential_char_to_write != char_in_paper:
@@ -46,3 +48,9 @@ class Pencil():
 
 	def write(self, to_write, paper, string_starting_point, params=None):
 		self.how_to_write(to_write, paper, string_starting_point, params)
+
+	def sharpen(self):
+		if self.length <= 0:
+			return
+		self.length = max(0, self.length - 1)
+		self.point_durability = self.max_point_durrability
