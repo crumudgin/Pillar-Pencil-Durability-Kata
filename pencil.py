@@ -6,7 +6,7 @@ class Pencil():
 		self.max_point_durrability = point_durability
 		self.length = length
 
-	def calc_char_to_write(self, potential_char_to_write, char_in_paper):
+	def __calc_char_to_write(self, potential_char_to_write, char_in_paper):
 		if potential_char_to_write != char_in_paper:
 			self.point_durability -= 1
 			if potential_char_to_write.isupper():
@@ -22,15 +22,16 @@ class Pencil():
 		if len(paper_text) < string_starting_point:
 			paper_text += " " * (string_starting_point - len(paper_text))
 		new_paper_text = list(paper_text[:string_starting_point])
+		
 		paper_index = 0
 		for index, char in enumerate(to_write):
 			paper_index = string_starting_point + index
 			if paper_index < len(paper_text) and char != " " and paper_text[paper_index] != " ":
-				new_paper_text.append(self.calc_char_to_write("@", paper_text[paper_index]))
+				new_paper_text.append(self.__calc_char_to_write("@", paper_text[paper_index]))
 			elif paper_index < len(paper_text):
-				new_paper_text.append(self.calc_char_to_write(max(char, paper_text[paper_index]), paper_text[paper_index]))
+				new_paper_text.append(self.__calc_char_to_write(max(char, paper_text[paper_index]), paper_text[paper_index]))
 			else:
-				new_paper_text.append(self.calc_char_to_write(char, " "))
+				new_paper_text.append(self.__calc_char_to_write(char, " "))
 
 		return "".join(new_paper_text) + paper_text[paper_index+1:]
 
