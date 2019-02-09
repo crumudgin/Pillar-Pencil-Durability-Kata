@@ -12,13 +12,13 @@ writing_test_data =	[("Hello World!", 							"",						"Hello World!",			None),
 
 point_degradation_test_labels = "expected_writing_on_page, expected_point_value, starting_point_value, page_before_being_writen_on, string_to_write, string_starting_point"
 
-point_degradation_test_data = 	[("test", 0, 4, "", "test", None),
-								("Test", 0, 5, "", "Test", None),
-								("Tes ", 0, 4, "", "Test", None),
-								("This is a Test!", 0, 14, "", "This is a Test!", None),
-								("This           ", 0, 5, "", "This is a Test!", None),
-								("This is a Test!", 10, 24, "", "This is a Test!", None),
-								("This is a Test!", 8, 14, "This is a ", "Test!", 8)
+point_degradation_test_data = 	[("test",			0,	4,	"",				"test",				None),
+								("Test",			0,	5,	"",				"Test",				None),
+								("Tes ",			0,	4,	"",				"Test",				None),
+								("This is a Test!",	0,	14,	"",				"This is a Test!",	None),
+								("This           ",	0,	5,	"",				"This is a Test!",	None),
+								("This is a Test!",	10,	24,	"",				"This is a Test!",	None),
+								("This is a Test!",	8,	14,	"This is a ",	"Test!",			10)
 								]
 
 """
@@ -54,4 +54,4 @@ def test_point_degradation(expected_writing_on_page, expected_point_value, start
 	paper = [page_before_being_writen_on]
 	pencil.write(string_to_write, paper, string_starting_point)
 	assert expected_writing_on_page == paper[0]
-	assert expected_point_value == pencil.point_value
+	assert expected_point_value == pencil.point_durability
