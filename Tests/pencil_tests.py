@@ -40,7 +40,7 @@ erase_test_data = 	[("", "test", "test"),
 					("test", "testtest", "test"),
 					("123", "1232", "2"),
 					("test", "test", "2"),
-					("test", "the rest", "he rest")
+					("test", "the rest", "he r")
 					]
 
 """

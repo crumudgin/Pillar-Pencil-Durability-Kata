@@ -22,7 +22,7 @@ class Pencil():
 		if len(paper_text) < string_starting_point:
 			paper_text += " " * (string_starting_point - len(paper_text))
 		new_paper_text = list(paper_text[:string_starting_point])
-		
+
 		paper_index = 0
 		for index, char in enumerate(to_write):
 			paper_index = string_starting_point + index
@@ -55,3 +55,9 @@ class Pencil():
 			return
 		self.length -= 1
 		self.point_durability = self.max_point_durrability
+
+	def erase(self, paper, to_erase):
+		paper_text = paper[0]
+		location_of_to_erase = paper_text.rfind(to_erase)
+		if location_of_to_erase != -1:
+			paper[0] = paper_text[:location_of_to_erase] + ("" * len(to_erase)) + paper_text[location_of_to_erase + len(to_erase):]
