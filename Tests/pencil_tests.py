@@ -2,13 +2,6 @@ import pytest
 from pencil import Pencil
 
 """
-A pencil fixture to be shared by the rest of the test cases
-"""
-@pytest.fixture
-def pencil():
-	return Pencil(10000, 100)
-
-"""
 A series of tests to test that the pencil can write to a string
 """
 @pytest.mark.parametrize(("expected_writing_on_page",				"page_before_being_writen_on",	"string_to_write",		"string_starting_point"), 
@@ -19,7 +12,8 @@ A series of tests to test that the pencil can write to a string
 						("12 3",									"12",							"3",					3),
 						("",										"",								"",						None)
 						])
-def test_write_on_strings(pencil, expected_writing_on_page, page_before_being_writen_on, string_to_write, string_starting_point):
+def test_write_on_strings(expected_writing_on_page, page_before_being_writen_on, string_to_write, string_starting_point):
+	pencil = Pencil(10000, 10, 10)
 	paper = pencil.write(string_to_write, page_before_being_writen_on, string_starting_point)
 	assert expected_writing_on_page == paper
 
@@ -39,7 +33,7 @@ A series of tests to test the pencil durability and what happens when that durab
 						("",							10,						10,						"",								"",					None)
 						])
 def test_point_degradation(expected_writing_on_page, expected_point_value, starting_point_value, page_before_being_writen_on, string_to_write, string_starting_point):
-	pencil = Pencil(starting_point_value, 1)
+	pencil = Pencil(starting_point_value, 1, 1)
 	paper = pencil.write(string_to_write, page_before_being_writen_on, string_starting_point)
 	assert expected_writing_on_page == paper
 	assert expected_point_value == pencil.point_durability
@@ -55,19 +49,25 @@ A series of tests to test the sharpen functionality of the pencil
 						(1,						6,						0,					0,					"",								"Test",				None)
 						])
 def test_sharpen(expected_point_value, starting_point_value, expected_length, starting_length, page_before_being_writen_on, string_to_write, string_starting_point):
-	pencil = Pencil(starting_point_value, starting_length)
+	pencil = Pencil(starting_point_value, starting_length, 1)
 	pencil.write(string_to_write, page_before_being_writen_on, string_starting_point)
 	pencil.sharpen()
 	assert pencil.point_durability == expected_point_value
 	assert pencil.length == expected_length
 
-@pytest.mark.parametrize(("expected_writing_on_page",	"page_before_being_erased",	"string_to_erase"), 
-						[("",							"test",						"test"),
-						("test",						"testtest",					"test"),
-						("123",							"1232",						"2"),
-						("test",						"test",						"2"),
-						("test",						"the rest",					"he r")
+"""
+A series of tests to test the erase functionality of the pencil
+"""
+@pytest.mark.parametrize(("expected_writing_on_page",	"page_before_being_erased",	"string_to_erase",	"eraser_size",	"expected_eraser_size"), 
+						[("",							"test",						"test",				10,				6),
+						("test    ",					"testtest",					"test",				10,				6),
+						("123 ",						"1232",						"2",				10,				9),
+						("test",						"test",						"2",				10,				10),
+						("t    est",					"the rest",					"he r",				10,				7),
+						("test",						"test",						"test",				0,				0),
+						("tes ",						"test",						"test",				1,				0),
 						])
-def test_erase(pencil, expected_writing_on_page, page_before_being_erased, string_to_erase):
+def test_erase(pencil, expected_writing_on_page, page_before_being_erased, string_to_erase, eraser_size, expected_eraser_size):
 	paper = pencil.erase(page_before_being_erased, string_to_erase)
 	assert expected_writing_on_page == paper
+	assert expected_eraser_size == pencil.eraser_size
