@@ -52,6 +52,17 @@ def test_write_on_text_files(durable_pencil, tmpdir, expected_writing_on_page, p
 	durable_pencil.write(string_to_write, paper, string_starting_point)
 	assert paper.read() == expected_writing_on_page
 
+@pytest.mark.parametrize(writing_test_labels, writing_test_data)
+def test_write_on_paper_object(durable_pencil, expected_writing_on_page, page_before_being_writen_on, string_to_write, string_starting_point):
+	class Paper():
+		def __init__(self, text):
+			self.text = text
+
+	paper = Paper(page_before_being_writen_on)
+	durable_pencil.how_to_write = durable_pencil.write_to_object_param
+	durable_pencil.write(string_to_write, paper, string_starting_point, "text")
+	assert paper.text == expected_writing_on_page
+
 """
 A series of tests to test the pencil durrability and what happens when that durrability runs out
 """
