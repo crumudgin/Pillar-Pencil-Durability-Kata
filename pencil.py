@@ -32,13 +32,17 @@ class Pencil():
 
 		return new_paper_text + paper_text[paper_index+1:]
 
-	def write_to_string(self, to_write, paper, string_starting_point):
+	def write_to_string(self, to_write, paper, string_starting_point, params):
 		paper[0] = self.write_from_starting_point(to_write, paper[0], string_starting_point)
 
-	def write_to_text_file(self, to_write, paper, string_starting_point):
+	def write_to_text_file(self, to_write, paper, string_starting_point, params):
 		with open(paper, "r+") as file:
 			paper_text = self.write_from_starting_point(to_write, paper.read(), string_starting_point)
 			file.write(paper_text)
 
-	def write(self, to_write, paper, string_starting_point):
-		self.how_to_write(to_write, paper, string_starting_point)
+	def write_to_object_variable(self, to_write, paper, string_starting_point, paper_var):
+		place_to_write = getattr(paper, paper_var)
+		setattr(paper, paper_var, self.write_from_starting_point(to_write, place_to_write, string_starting_point))
+
+	def write(self, to_write, paper, string_starting_point, params=None):
+		self.how_to_write(to_write, paper, string_starting_point, params)
