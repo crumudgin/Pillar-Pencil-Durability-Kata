@@ -20,6 +20,7 @@ class Pencil():
 		if len(paper_text) < string_starting_point:
 			paper_text += " " * (string_starting_point - len(paper_text))
 		new_paper_text = paper_text[:string_starting_point]
+		paper_index = 0
 		for index, char in enumerate(to_write):
 			paper_index = string_starting_point + index
 			if paper_index < len(paper_text) and char != " " and paper_text[paper_index] != " ":
@@ -28,9 +29,8 @@ class Pencil():
 				new_paper_text += self.calc_char_to_write(max(char, paper_text[paper_index]), paper_text[paper_index])
 			else:
 				new_paper_text += self.calc_char_to_write(char, " ")
-			
-		new_paper_text += paper_text[paper_index+1:]
-		return new_paper_text
+
+		return new_paper_text + paper_text[paper_index+1:]
 
 	def write_to_string(self, to_write, paper, string_starting_point):
 		paper[0] = self.write_from_starting_point(to_write, paper[0], string_starting_point)
