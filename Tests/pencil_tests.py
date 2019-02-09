@@ -4,9 +4,10 @@ from pencil import Pencil
 test_labels = "expected_writing_on_page, page_before_being_writen_on, string_to_write, string_starting_point"
 
 test_data = [("Hello World!", 							"",						"Hello World!",			0),
-			("She sells sea shells by the sea shore", 	"She sells sea shells",	" by the sea shore",	0),
+			("She sells sea shells by the sea shore", 	"She sells sea shells",	" by the sea shore",	20),
 			("123", 									"1 3", 					"2",					1),
-			("1@3",										"123",					"2", 					1)
+			("1@3",										"123",					"2", 					1),
+			("12 3", 									"12", 					"3", 					3)
 			]
 
 """
@@ -36,23 +37,4 @@ def test_write_on_text_files(pencil, tmpdir, expected_writing_on_page, page_befo
 	paper.write(page_before_being_writen_on)
 	pencil.write(string_to_write, paper, string_starting_point)
 	assert paper.read() == expected_writing_on_page
-
-"""
-A series of tests to test that the pencil can write on any object so long as pencil.write_to_paper is defined prior to the writing
-"""
-@pytest.mark.parametrize(test_labels, test_data)
-def test_write_on_object(pencil, expected_writing_on_page, page_before_being_writen_on, string_to_write, string_starting_point):
-	class Paper():
-
-		def __init__(self, space_on_paper):
-			self.space_on_paper = space_on_paper
-
-	def write_to_paper(to_write, paper):
-		paper.space_on_paper += to_write
-
-	paper = Paper(page_before_being_writen_on)
-	pencil.how_to_write = write_to_paper
-	pencil.write(string_to_write, paper, string_starting_point)
-
-	assert paper.space_on_paper == expected_writing_on_page
 
