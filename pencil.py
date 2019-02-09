@@ -52,5 +52,5 @@ class Pencil():
 	def sharpen(self):
 		if self.length <= 0:
 			return
-		self.length = max(0, self.length - 1)
+		self.length -= 1
 		self.point_durability = self.max_point_durrability
