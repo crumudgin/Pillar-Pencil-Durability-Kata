@@ -1,9 +1,10 @@
 class Pencil():
 
-	def __init__(self, point_durability, length):
+	def __init__(self, point_durability, length, eraser):
 		self.point_durability = point_durability
 		self.max_point_durrability = point_durability
 		self.length = length
+		self.eraser = eraser
 
 	def __calc_char_to_write(self, potential_char_to_write, char_in_paper):
 		if potential_char_to_write != char_in_paper:
@@ -44,5 +45,12 @@ class Pencil():
 		location_of_to_erase = paper.rfind(to_erase)
 		if location_of_to_erase == -1:
 			return paper
-		return paper[:location_of_to_erase] + ("" * len(to_erase)) + paper[location_of_to_erase + len(to_erase):]
+
+		if self.eraser >= len(to_erase) and self.eraser > 0:
+			self.eraser -= sum([1 for i in to_erase if i != " "])
+			return paper[:location_of_to_erase] + (" " * len(to_erase)) + paper[location_of_to_erase + len(to_erase):]
+		start_erasing = location_of_to_erase + (len(to_erase) - self.eraser)
+		paper = paper[:start_erasing] + (" " * self.eraser) + paper[start_erasing + self.eraser:]
+		self.eraser = 0
+		return paper
 			
