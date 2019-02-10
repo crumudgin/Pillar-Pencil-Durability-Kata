@@ -59,7 +59,7 @@ def test_sharpen(expected_point_value, starting_point_value, expected_length, st
 A series of tests to test the erase functionality of the pencil
 """
 @pytest.mark.parametrize(("expected_writing_on_page",	"page_before_being_erased",	"string_to_erase",	"eraser_size",	"expected_eraser_size"), 
-						[("",							"test",						"test",				10,				6),
+						[("    ",						"test",						"test",				10,				6),
 						("test    ",					"testtest",					"test",				10,				6),
 						("123 ",						"1232",						"2",				10,				9),
 						("test",						"test",						"2",				10,				10),
@@ -67,7 +67,8 @@ A series of tests to test the erase functionality of the pencil
 						("test",						"test",						"test",				0,				0),
 						("tes ",						"test",						"test",				1,				0),
 						])
-def test_erase(pencil, expected_writing_on_page, page_before_being_erased, string_to_erase, eraser_size, expected_eraser_size):
+def test_erase(expected_writing_on_page, page_before_being_erased, string_to_erase, eraser_size, expected_eraser_size):
+	pencil = Pencil(10000, 10000, eraser_size)
 	paper = pencil.erase(page_before_being_erased, string_to_erase)
 	assert expected_writing_on_page == paper
-	assert expected_eraser_size == pencil.eraser_size
+	assert expected_eraser_size == pencil.eraser
