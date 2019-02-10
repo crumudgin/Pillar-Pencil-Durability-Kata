@@ -43,10 +43,10 @@ A series of tests to test the sharpen functionality of the pencil
 """
 @pytest.mark.parametrize(("expected_point_value",	"starting_point_value",	"expected_length",	"starting_length",	"page_before_being_writen_on",	"string_to_write",	"string_starting_point"), 
 						[(1,						1,						0,					1,					"",								"",					None),
-						(5,						5,						0,					1,					"",								"Test",				None),
-						(5,						5,						1,					2,					"",								"Test",				None),
-						(0,						5,						0,					0,					"",								"Test",				None),
-						(1,						6,						0,					0,					"",								"Test",				None)
+						(5,							5,						0,					1,					"",								"Test",				None),
+						(5,							5,						1,					2,					"",								"Test",				None),
+						(0,							5,						0,					0,					"",								"Test",				None),
+						(1,							6,						0,					0,					"",								"Test",				None)
 						])
 def test_sharpen(expected_point_value, starting_point_value, expected_length, starting_length, page_before_being_writen_on, string_to_write, string_starting_point):
 	pencil = Pencil(starting_point_value, starting_length, 1)
@@ -66,6 +66,7 @@ A series of tests to test the erase functionality of the pencil
 						("t    est",					"the rest",					"he r",				10,				7),
 						("test",						"test",						"test",				0,				0),
 						("tes ",						"test",						"test",				1,				0),
+						("Buffalo B   ",				"Buffalo Bill",				"Bill",				3,				0)
 						])
 def test_erase(expected_writing_on_page, page_before_being_erased, string_to_erase, eraser_size, expected_eraser_size):
 	pencil = Pencil(10000, 10000, eraser_size)

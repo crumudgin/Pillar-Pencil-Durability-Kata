@@ -6,7 +6,16 @@ class Pencil():
 		self.length = length
 		self.eraser = eraser
 
-	def __calc_char_to_write(self, potential_char_to_write, char_in_paper):
+	"""
+	Paramaters: potential_char_to_write - the char the pencil is being instructed to "write"
+				char_in_paper 			- the char currently on the paper
+	Description: decrements the pencil's point durability.
+				 if the char is lowercase the point durrability is decremented once.
+				 if the char is uppercase the point durrability is decremented twice.
+				 if the point durrability is zero the point durrability is not decremented.
+	Returns: the char that should be written down based on the point durrability
+	"""
+	def decrement_durability(self, potential_char_to_write, char_in_paper):
 		if potential_char_to_write != char_in_paper:
 			self.point_durability -= 1
 			if potential_char_to_write.isupper():
@@ -16,41 +25,59 @@ class Pencil():
 				return char_in_paper
 		return potential_char_to_write
 
-	def write(self, to_write, paper, string_starting_point):
+	"""
+	Paramaters: to_write				- the string the pencil is being instructed to "write"
+				paper					- the current text on the "paper"
+				string_starting_point	- the index where the pencil should begin writing
+										  if None, the pencil will append the text to the end of the paper
+	Description: writes the provided string to the paper.
+				 any conflicts while writing will be recorded by writing "@" instead of any given char.
+	Returns: the amended paper
+	"""
+	def write(self, to_write, paper, string_starting_point=None):
 		if string_starting_point is None:
 			string_starting_point = len(paper)
-		if len(paper) < string_starting_point:
-			paper += " " * (string_starting_point - len(paper))
-		new_paper_text = list(paper[:string_starting_point])
 
-		paper_index = 0
-		for index, char in enumerate(to_write):
-			paper_index = string_starting_point + index
-			if paper_index < len(paper) and char != " " and paper[paper_index] != " ":
-				new_paper_text.append(self.__calc_char_to_write("@", paper[paper_index]))
-			elif paper_index < len(paper):
-				new_paper_text.append(self.__calc_char_to_write(max(char, paper[paper_index]), paper[paper_index]))
-			else:
-				new_paper_text.append(self.__calc_char_to_write(char, " "))
+		string_ending_point = string_starting_point + len(to_write)
+		new_paper_text = [" "] * max(len(paper), string_ending_point)
 
-		return "".join(new_paper_text) + paper[paper_index+1:]
+		for index in range(len(new_paper_text)):
+			if index < len(paper):
+				new_paper_text[index] = paper[index]
+			if index >= string_starting_point and index < string_ending_point:
+				to_write_char = to_write[index - string_starting_point]
+				if to_write_char != " " and new_paper_text[index] != " ":
+					new_paper_text[index] = self.decrement_durability("@", new_paper_text[index])
+				else:
+					new_paper_text[index] = self.decrement_durability(max(to_write_char, new_paper_text[index]), new_paper_text[index])
 
+		return "".join(new_paper_text)
+
+	"""
+	Description: restores the pencils point durrability to it's initial value and decrements the pencils length
+	"""
 	def sharpen(self):
 		if self.length <= 0:
 			return
 		self.length -= 1
 		self.point_durability = self.max_point_durrability
 
-	def erase(self, paper, to_erase):
-		location_of_to_erase = paper.rfind(to_erase)
-		if location_of_to_erase == -1:
+	"""
+	Paramaters: paper			- the current text on the "paper"
+				string_to_erase	- the string to find in the paper
+	Description: locates the last instance of the string_to_erase in the paper and replaces
+				 all the chars with " " so long as the eraser remains above zero
+	Returns: the amended paper
+	"""
+	def erase(self, paper, string_to_erase):
+		location_of_string_to_erase = paper.rfind(string_to_erase)
+		if location_of_string_to_erase == -1:
 			return paper
 
-		if self.eraser >= len(to_erase) and self.eraser > 0:
-			self.eraser -= sum([1 for i in to_erase if i != " "])
-			return paper[:location_of_to_erase] + (" " * len(to_erase)) + paper[location_of_to_erase + len(to_erase):]
-		start_erasing = location_of_to_erase + (len(to_erase) - self.eraser)
-		paper = paper[:start_erasing] + (" " * self.eraser) + paper[start_erasing + self.eraser:]
-		self.eraser = 0
-		return paper
+		erased_string = " " * min(len(string_to_erase), self.eraser)
+		stop_erasing = location_of_string_to_erase + len(string_to_erase)
+		start_erasing = stop_erasing -  len(erased_string)
+
+		self.eraser -= sum([1 for i in string_to_erase[len(string_to_erase) - len(erased_string):] if i != " "])
+		return paper[:start_erasing] + erased_string + paper[stop_erasing:]
 			
