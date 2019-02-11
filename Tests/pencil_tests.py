@@ -52,7 +52,7 @@ A series of tests to test the pencil durability and what happens when that durab
 						("This is a Test!",				0,						5,						"T i   s a T s !",				"h s i     e t",	1),
 						(" ",							1,						1,						"",								" ",				None),
 						("\n",							1,						1,						"",								"\n",				None),
-						("@",							0,						1,						"",								"T",				None)
+						(" ",							0,						1,						"",								"T",				None)
 						])
 def test_point_degradation(expected_writing_on_page, expected_point_value, starting_point_value, page_before_being_writen_on, string_to_write, string_starting_point):
 	pencil = Pencil(starting_point_value, 1, 1)
