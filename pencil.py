@@ -16,7 +16,7 @@ class Pencil():
 	Returns: the char that should be written down based on the point durrability
 	"""
 	def decrement_durability(self, potential_char_to_write, char_in_paper):
-		if potential_char_to_write != char_in_paper:
+		if potential_char_to_write != char_in_paper and potential_char_to_write != "\n":
 			self.point_durability -= 1
 			if potential_char_to_write.isupper():
 				self.point_durability -= 1
@@ -48,8 +48,10 @@ class Pencil():
 				to_write_char = to_write[index - string_starting_point]
 				if to_write_char != " " and new_paper_text[index] != " ":
 					new_paper_text[index] = self.decrement_durability("@", new_paper_text[index])
+				elif to_write_char == " ":
+					new_paper_text[index] = self.decrement_durability(new_paper_text[index], new_paper_text[index])
 				else:
-					new_paper_text[index] = self.decrement_durability(max(to_write_char, new_paper_text[index]), new_paper_text[index])
+					new_paper_text[index] = self.decrement_durability(to_write_char, new_paper_text[index])
 
 		return "".join(new_paper_text)
 
