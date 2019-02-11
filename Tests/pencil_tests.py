@@ -10,12 +10,30 @@ A series of tests to test that the pencil can write to a string
 						("123",										"1 3",							"2",					1),
 						("1@3",										"123",							"2",					1),
 						("12 3",									"12",							"3",					3),
-						("",										"",								"",						None)
+						("",										"",								"",						None),
+						("This is a Test!",							"T i   s a T s !",				"h s i     e t",		1),
+						("   ",										"",								"   ",					None),
+						("   ",										" ",							" ",					2)
 						])
 def test_write_on_strings(expected_writing_on_page, page_before_being_writen_on, string_to_write, string_starting_point):
 	pencil = Pencil(10000, 10, 10)
 	paper = pencil.write(string_to_write, page_before_being_writen_on, string_starting_point)
 	assert expected_writing_on_page == paper
+
+"""
+A series of tests to test that the pencil does not require a specific starting point
+"""
+@pytest.mark.parametrize(("expected_writing_on_page",				"page_before_being_writen_on",	"string_to_write"), 
+						[("Hello World!",							"",								"Hello World!"),
+						("She sells sea shells by the sea shore",	"She sells sea shells",			" by the sea shore"),
+						("",										"",								""),
+						("   ",										"",								"   "),
+						])
+def test_write_on_strings_with_no_start_point(expected_writing_on_page, page_before_being_writen_on, string_to_write):
+	pencil = Pencil(10000, 10, 10)
+	paper = pencil.write(string_to_write, page_before_being_writen_on)
+	assert expected_writing_on_page == paper
+
 
 """
 A series of tests to test the pencil durability and what happens when that durability runs out
@@ -27,16 +45,19 @@ A series of tests to test the pencil durability and what happens when that durab
 						("This is a Test!",				0,						14,						"",								"This is a Test!",	None),
 						("This           ",				0,						5,						"",								"This is a Test!",	None),
 						("This is a Test!",				10,						24,						"",								"This is a Test!",	None),
-						("This is a Test!",				8,						14,						"This is a ",					"Test!",			10),
+						("This is a Test!",				8,						14,						"This is a ",					"Test!",			None),
 						("    ",						0,						0,						"",								"test",				None),
 						("    ",						0,						-1,						"",								"test",				None),
-						("",							10,						10,						"",								"",					None)
+						("",							10,						10,						"",								"",					None),
+						("This is a Test!",				0,						5,						"T i   s a T s !",				"h s i     e t",	1),
+						(" ",							1,						1,						"",								" ",				None)
 						])
 def test_point_degradation(expected_writing_on_page, expected_point_value, starting_point_value, page_before_being_writen_on, string_to_write, string_starting_point):
 	pencil = Pencil(starting_point_value, 1, 1)
 	paper = pencil.write(string_to_write, page_before_being_writen_on, string_starting_point)
 	assert expected_writing_on_page == paper
 	assert expected_point_value == pencil.point_durability
+
 
 """
 A series of tests to test the sharpen functionality of the pencil
@@ -54,6 +75,7 @@ def test_sharpen(expected_point_value, starting_point_value, expected_length, st
 	pencil.sharpen()
 	assert pencil.point_durability == expected_point_value
 	assert pencil.length == expected_length
+	
 
 """
 A series of tests to test the erase functionality of the pencil
