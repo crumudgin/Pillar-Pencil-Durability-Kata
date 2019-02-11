@@ -7,7 +7,7 @@ class Pencil():
 		self.eraser = eraser
 
 	"""
-	Paramaters: potential_char_to_write - the char the pencil is being instructed to "write"
+	Paramaters: char_to_write 			- the char the pencil is being instructed to "write"
 				char_in_paper 			- the char currently on the paper
 	Description: decrements the pencil's point durability.
 				 if the char is lowercase the point durrability is decremented once.
@@ -15,15 +15,15 @@ class Pencil():
 				 if the point durrability is zero the point durrability is not decremented.
 	Returns: the char that should be written down based on the point durrability
 	"""
-	def decrement_durability(self, potential_char_to_write, char_in_paper):
-		if potential_char_to_write != char_in_paper and potential_char_to_write != "\n":
+	def decrement_durability(self, char_to_write, char_in_paper):
+		if char_to_write != char_in_paper and char_to_write != "\n":
 			self.point_durability -= 1
-			if potential_char_to_write.isupper():
+			if char_to_write.isupper():
 				self.point_durability -= 1
 			if self.point_durability < 0:
 				self.point_durability = 0
 				return char_in_paper
-		return potential_char_to_write
+		return char_to_write
 
 	"""
 	Paramaters: to_write				- the string the pencil is being instructed to "write"
